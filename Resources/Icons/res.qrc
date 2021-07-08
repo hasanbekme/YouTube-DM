@@ -1,0 +1,36 @@
+<RCC>
+  <qresource prefix="mw_icons">
+    <file>icon.png</file>
+    <file>about_dialog.png</file>
+    <file>ru.qm</file>
+    <file>open.png</file>
+    <file>downloading.gif</file>
+    <file>download.gif</file>
+    <file>open_file_folder.png</file>
+    <file>play.png</file>
+    <file>a_vs_v.png</file>
+    <file>delete.png</file>
+    <file>about.png</file>
+    <file>uzbek.png</file>
+    <file>russian.png</file>
+    <file>settings.png</file>
+    <file>loading.gif</file>
+    <file>home.png</file>
+    <file>open_folder.png</file>
+    <file>right_arrow.png</file>
+    <file>back_arrow.png</file>
+    <file>feedback.png</file>
+    <file>close_button.png</file>
+    <file>download_icon.png</file>
+    <file>audio_format.png</file>
+    <file>video_format.png</file>
+    <file>paste.png</file>
+    <file>drop_down.png</file>
+    <file>downward_arrow.png</file>
+    <file>link_icon.png</file>
+    <file>video_frames.png</file>
+    <file>downloads_folder.png</file>
+    <file>youtube_icon.png</file>
+    <file>mw_icon.png</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,1 @@
+pyinstaller main.py --clean --windowed --uac-admin --icon=icon.ico

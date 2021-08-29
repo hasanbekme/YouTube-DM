@@ -37,10 +37,11 @@ class VideoDownloader(QThread):
         self.data.emit(res)
 
     def merge_data(self):
-        print(self.filename)
-        print(self.v)
-        print(self.a)
-        command = f"""ffmpeg -i  "{self.v}" -i "{self.a}" -c:v copy -c:a copy "{self.filename}" """
+        print("Filename: "+self.filename)
+        print("Video stream: "+self.v)
+        print("Audio Stream: "+self.a)
+        command = f"""ffmpeg\\nt\\bin\\ffmpeg.exe -i  "{self.v}" -i "{self.a}" -c:v copy -c:a aac "{self.filename}" """
+        #command = f"""ffmpeg -i  "{self.v}" -i "{self.a}" -c:v copy -c:a copy "{self.filename}" """
         os.system(command)
 
 

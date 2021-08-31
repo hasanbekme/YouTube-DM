@@ -15,18 +15,32 @@ class Main_window(hs.main_window.MainWindow):
 
 
 def check_folders():
-    if not os.path.isdir(str(Path.home() / "Downloads/YouTube")):
-        os.mkdir(str(Path.home() / "Downloads/YouTube"))
-    if not os.path.isdir(os.getenv('APPDATA') + '\\Youtube DM'):
-        os.mkdir(os.getenv('APPDATA') + '\\Youtube DM')
-    if not os.path.isdir(os.getenv('APPDATA') + '\\Youtube DM\\temp'):
-        os.mkdir(os.getenv('APPDATA') + '\\Youtube DM\\temp')
+    if os.name == 'nt':
+        if not os.path.isdir(str(Path.home() / "Downloads/YouTube")):
+            os.mkdir(str(Path.home() / "Downloads/YouTube"))
+        if not os.path.isdir(os.getenv('APPDATA') + '\\Youtube DM'):
+            os.mkdir(os.getenv('APPDATA') + '\\Youtube DM')
+        if not os.path.isdir(os.getenv('APPDATA') + '\\Youtube DM\\temp'):
+            os.mkdir(os.getenv('APPDATA') + '\\Youtube DM\\temp')
+
+    elif os.name == 'posix':
+        if not os.path.isdir(str(Path.home()) + "/" + "Downloads/YouTube"):
+            os.mkdir(str(Path.home()) + "/" + "Downloads/YouTube")
+        if not os.path.isdir(str(os.getcwd()) + "/" + 'Youtube DM'):
+            os.mkdir(str(os.getcwd()) + "/" + 'Youtube DM')
+        if not os.path.isdir(str(os.getcwd()) + "/" + 'Youtube DM/temp'):
+            os.mkdir(str(os.getcwd()) + "/" + 'Youtube DM/temp')
 
 
 def get_language():
     settings = QSettings('YouTube DM', 'Configs')
     if not (settings.contains('save_path')):
-        settings.setValue('save_path', str(Path.home() / "Downloads/YouTube"))
+        if os.name == 'nt':
+            settings.setValue('save_path', str(Path.home() / "Downloads/YouTube"))
+
+        elif os.name == 'posix':
+            settings.setValue('save_path', str(Path.home()) + "/" + "Downloads/YouTube")
+            
     if settings.contains('language'):
         return settings.value('language')
     else:
@@ -36,7 +50,6 @@ def get_language():
 
 def restart():
     os.execv(sys.executable, ['python'] + sys.argv)
-
 
 if __name__ == '__main__':
     try:
@@ -55,3 +68,21 @@ if __name__ == '__main__':
     except Exception as er:
         with open("error.txt", "w+") as f:
             f.write(str(er))
+            
+
+
+"""
+if __name__ == '__main__':
+    check_folders()
+    app = QApplication(sys.argv)
+    lan = get_language()
+    tr = QTranslator()
+    if lan == 'RU':
+        tr.load(":/mw_icons/ru.qm")
+    app.installTranslator(tr)
+    window = Main_window()
+    window.showMaximized()
+    window.restart.connect(restart)
+    app.setStyle('Fusion')
+    sys.exit(app.exec_())
+"""

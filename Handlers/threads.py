@@ -4,6 +4,7 @@ from pget import Downloader
 
 from .utils import *
 
+import os
 
 class VideoDownloader(QThread):
     data = pyqtSignal(dict)
@@ -11,8 +12,15 @@ class VideoDownloader(QThread):
     def __init__(self, val):
         super(VideoDownloader, self).__init__()
         self.filename = val['filename']
-        self.v = prepare_temp() + '\\video.mp4'
-        self.a = prepare_temp() + '\\audio.webm'
+
+        if os.name == 'nt':
+            self.v = prepare_temp() + '\\video.mp4'
+            self.a = prepare_temp() + '\\audio.webm'
+
+        elif os.name == 'posix':
+            self.v = prepare_temp() + '/video.mp4'
+            self.a = prepare_temp() + '/audio.webm'
+
         self.dr = Downloader(val['url_v'], self.v, 8)
         self.md = Downloader(val['url_a'], self.a, 8)
         self.status = 0
@@ -37,11 +45,17 @@ class VideoDownloader(QThread):
         self.data.emit(res)
 
     def merge_data(self):
-        print("Filename: "+self.filename)
-        print("Video stream: "+self.v)
-        print("Audio Stream: "+self.a)
-        command = f"""ffmpeg\\nt\\bin\\ffmpeg.exe -i  "{self.v}" -i "{self.a}" -c:v copy -c:a aac "{self.filename}" """
-        #command = f"""ffmpeg -i  "{self.v}" -i "{self.a}" -c:v copy -c:a copy "{self.filename}" """
+        print(self.filename)
+        print(self.v)
+        print(self.a)
+        if os.name == "nt":
+            command = f"""ffmpeg\\nt\\bin\\ffmpeg.exe -i  "{self.v}" -i "{self.a}" -c:v copy -c:a copy ""{self.filename}" """
+
+        elif os.name == "posix":
+            command = f"""ffmpeg/posix/bin/ffmpeg -i  "{self.v}" -i "{self.a}" -c:v copy -c:a copy "{self.filename}" """
+            print(command)
+
+#        command = f"""ffmpeg -i  "{self.v}" -i "{self.a}" -c:v copy -c:a copy "{self.filename}" """
         os.system(command)
 
 

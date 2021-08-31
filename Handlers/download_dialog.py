@@ -10,6 +10,7 @@ from models import Media
 from .threads import *
 from .utils import *
 
+import os
 
 class DownloadDialog(QDialog, download_dialog.Ui_Dialog):
     def __init__(self, mv, parent=None):
@@ -32,14 +33,28 @@ class DownloadDialog(QDialog, download_dialog.Ui_Dialog):
     def download_clicked(self):
         if self.download_button.text() == self.tr('Yuklash'):
             s_f = self.a_f.currentText().split(',')[0]
-            if s_f in ['360p', '480p', '720p', '1080p']:
-                filename = self.save_path.text() + '\\' + clear_name(self.title.text()) + ' ' + s_f + '.mp4'
-                self.file_size = self.res['v_s'][s_f].filesize
-                self.media_type = 'Video'
-            else:
-                self.media_type = 'Audio'
-                filename = self.save_path.text() + '\\' + clear_name(self.title.text()) + '.mp3'
-                self.file_size = self.res['a_s'].filesize
+
+            if os.name == 'nt':
+                if s_f in ['360p', '480p', '720p', '1080p']:
+                    filename = self.save_path.text() + '\\' + clear_name(self.title.text()) + ' ' + s_f + '.mp4'
+                    self.file_size = self.res['v_s'][s_f].filesize
+                    self.media_type = 'Video'
+                else:
+                    self.media_type = 'Audio'
+                    filename = self.save_path.text() + '\\' + clear_name(self.title.text()) + '.mp3'
+                    self.file_size = self.res['a_s'].filesize
+
+            elif os.name == 'posix':
+                if s_f in ['360p', '480p', '720p', '1080p']:
+                    filename = self.save_path.text() + '/' + clear_name(self.title.text()) + ' ' + s_f + '.mp4'
+                    self.file_size = self.res['v_s'][s_f].filesize
+                    self.media_type = 'Video'
+                else:
+                    self.media_type = 'Audio'
+                    filename = self.save_path.text() + '/' + clear_name(self.title.text()) + '.mp3'
+                    self.file_size = self.res['a_s'].filesize
+
+
             self.file_name = filename
 
             self.download_button.setIcon(QIcon(self.downloading.currentPixmap()))
@@ -63,7 +78,11 @@ class DownloadDialog(QDialog, download_dialog.Ui_Dialog):
             self.d_class.start()
 
         elif self.download_button.text() == self.tr('Ochish'):
-            os.system("explorer " + self.save_path.text().replace('/', '\\'))
+            if os.name == 'nt':
+                os.system("explorer " + self.save_path.text().replace('/', '\\'))
+
+            elif os.name == 'posix':
+                os.system("explorer " + self.save_path.text())
 
     def call_back(self, data):
         v = int(round(data['total_downloaded'] / self.file_size * 100))
@@ -76,9 +95,16 @@ class DownloadDialog(QDialog, download_dialog.Ui_Dialog):
             self.download_button.setText(self.tr("Ochish"))
             self.download_button.setDisabled(False)
             try:
-                Media.create(Name=self.file_name.split("\\")[-1], Path=self.save_path.text(), Duration=self.v.length,
-                             Size=self.file_size, Type=self.media_type, Format=self.a_f.currentText().split(',')[0],
-                             Date=datetime.now())
+                if os.name == 'nt':
+                    Media.create(Name=self.file_name.split("\\")[-1], Path=self.save_path.text(), Duration=self.v.length,
+                                 Size=self.file_size, Type=self.media_type, Format=self.a_f.currentText().split(',')[0],
+                                 Date=datetime.now())
+               
+                if os.name == 'posix':
+                    Media.create(Name=self.file_name.split("/")[-1], Path=self.save_path.text(), Duration=self.v.length,
+                                 Size=self.file_size, Type=self.media_type, Format=self.a_f.currentText().split(',')[0],
+                                 Date=datetime.now())
+
             except:
                 pass
 

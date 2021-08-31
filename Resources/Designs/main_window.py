@@ -304,7 +304,11 @@ class Ui_MainWindow(object):
 "")
         self.close_error_frame_button.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("Resources/UI\\../../../YoutubeDownloader-main/icons/24x24/cil-x.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        import os
+        if os.name == 'nt':
+                icon1.addPixmap(QtGui.QPixmap("Resources/UI\\../../../YoutubeDownloader-main/icons/24x24/cil-x.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        elif os.name == 'posix':
+                icon1.addPixmap(QtGui.QPixmap("Resources/UI/../../../YoutubeDownloader-main/icons/24x24/cil-x.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.close_error_frame_button.setIcon(icon1)
         self.close_error_frame_button.setIconSize(QtCore.QSize(16, 16))
         self.close_error_frame_button.setObjectName("close_error_frame_button")
@@ -450,7 +454,12 @@ class Ui_MainWindow(object):
 "}")
         self.views_button_icon.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("Resources/UI\\../../../YoutubeDownloader-main/icons/24x24/cil-people.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        import os
+        if os.name == 'nt':
+                icon2.addPixmap(QtGui.QPixmap("Resources/UI\\../../../YoutubeDownloader-main/icons/24x24/cil-people.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        elif os.name == 'posix':
+                icon2.addPixmap(QtGui.QPixmap("Resources/UI/../../../YoutubeDownloader-main/icons/24x24/cil-people.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
         self.views_button_icon.setIcon(icon2)
         self.views_button_icon.setObjectName("views_button_icon")
         self.views_text = QtWidgets.QLabel(self.video_preview_frame)
@@ -478,7 +487,13 @@ class Ui_MainWindow(object):
 "")
         self.refresh_video_preview_button.setText("")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("Resources/UI\\../../../YoutubeDownloader-main/icons/24x24/cil-loop-circular.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        import os
+        if os.name == 'nt':
+                icon3.addPixmap(QtGui.QPixmap("Resources/UI\\../../../YoutubeDownloader-main/icons/24x24/cil-loop-circular.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        elif os.name == 'posix':
+                icon3.addPixmap(QtGui.QPixmap("Resources/UI/../../../YoutubeDownloader-main/icons/24x24/cil-loop-circular.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
         self.refresh_video_preview_button.setIcon(icon3)
         self.refresh_video_preview_button.setObjectName("refresh_video_preview_button")
         self.video_link_line_edit = QtWidgets.QLineEdit(self.inside_frame)

@@ -1,0 +1,6 @@
+pyqt5
+pytube
+pget
+peewee
+PyQtWebEngine
+ffmpeg-python

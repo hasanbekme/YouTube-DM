@@ -4,13 +4,26 @@ import time
 
 
 def prepare_temp():
-    folder = os.getenv('APPDATA') + "\\Youtube DM\\temp"
+    if os.name == "nt":
+        folder = os.getenv('APPDATA') + "\\Youtube DM\\temp"
+
+    elif os.name == "posix":
+        folder = str(os.getcwd()) + "/" + "Youtube DM/temp"
+
     print(folder)
     try:
-        if os.path.isfile(folder + "\\video.mp4"):
-            os.unlink(folder + "\\video.mp4")
-        if os.path.isfile(folder + "\\audio.webm"):
-            os.unlink(folder + "\\audio.webm")
+        if os.name == 'nt':
+            if os.path.isfile(folder + "\\video.mp4"):
+                os.unlink(folder + "\\video.mp4")
+            if os.path.isfile(folder + "\\audio.webm"):
+                os.unlink(folder + "\\audio.webm")
+
+        if os.name == 'posix':
+            if os.path.isfile(folder + "/video.mp4"):
+                os.unlink(folder + "/video.mp4")
+            if os.path.isfile(folder + "/audio.webm"):
+                os.unlink(folder + "/audio.webm")
+
     except Exception as e:
         print('Failed to delete. Reason: %s' % e)
     return folder

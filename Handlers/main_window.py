@@ -82,7 +82,11 @@ class MainWindow(QMainWindow, ds.main_window.Ui_MainWindow):
     def open_in_folder_pr(self):
         if self.tw.item(self.tw.currentRow(), 0) is not None:
             path = self.tw.item(self.tw.currentRow(), 1).text()
-            os.system('explorer ' + path.replace('/', '\\'))
+            
+            if os.name == 'nt':
+                os.system('explorer ' + path.replace('/', '\\'))
+            elif os.name == 'posix':
+                os.system('explorer ' + path)
 
     def setDownloadIcon(self):
         self.dm = QMovie(':/mw_icons/download.gif')
